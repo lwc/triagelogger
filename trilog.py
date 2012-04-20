@@ -5,27 +5,27 @@ import logging
 from sys import argv
 import json as json
 
-ZMQ_URI = "tcp://triage.99cluster.com:5001"
+import config
 
 logging.basicConfig(level=logging.DEBUG)
 
-logging.info('Initialising 0mq on %s' % argv[2])
+logging.info('Initialising 0mq on %s' % config.HOST_URL)
 try:
 	context = zmq.Context()
 	socket = context.socket(zmq.PUB)
-	socket.connect(argv[2])
+	socket.connect(config.HOST_URL)
 except Exception, e:
-	logging.error('Failed to connect to zmq server, please specify valid URL as second argument. eg: tcp://triage.99cluster.com:5001')
+	logging.error('Failed to connect to zmq server, please specify valid URL in config.py')
 	exit()
 
 logging.info('Initialising msgpack')
 packer = msgpack.Packer()
 
 try:
-	logging.info('Opening error log %s' % argv[1])
-	errfile = open(argv[1])
+	logging.info('Opening error log %s' % config.ERROR_FILE)
+	errfile = open(config.ERROR_FILE)
 except Exception, a:
-	logging.error('Failed to open log, please specify valid path as first argument')
+	logging.error('Failed to open log, please specify valid path in config.py')
 	exit()
 
 for line in tailer.follow(errfile):
