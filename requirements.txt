@@ -1,0 +1,4 @@
+distribute==0.6.19
+msgpack-python==0.1.12
+pyzmq==2.1.11
+tailer==0.3
