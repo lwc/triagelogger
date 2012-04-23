@@ -7,7 +7,7 @@ import json as json
 
 import config
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=config.LOGGING_LEVEL, format='%(asctime)s %(levelname)s %(message)s')
 
 logging.info('Initialising 0mq on %s' % config.HOST_URL)
 try:
@@ -29,9 +29,12 @@ except Exception, a:
 	exit()
 
 for line in tailer.follow(errfile):
+	logging.debug('Found line')
 	try:
 		err = json.loads(line)
+		logging.debug('Loaded JSON')
 		socket.send(packer.pack(err))
+		logging.debug('Sent')
 	except Exception, a:
 		logging.exception('Failed to process error')
 
