@@ -25,14 +25,8 @@ except Exception, e:
 logging.info('Initialising msgpack')
 packer = msgpack.Packer()
 
-try:
-	logging.info('Opening error log %s' % config.ERROR_FILE)
-	errfile = open(config.ERROR_FILE)
-except Exception, a:
-	logging.error('Failed to open log, please specify valid path in config.py')
-	exit()
-
-for line in tail(errfile):
+logging.info('Opening error log %s' % config.ERROR_FILE)
+for line in tail(config.ERROR_FILE):
 	logging.debug('Found line')
 	try:
 		err = json.loads(line)
