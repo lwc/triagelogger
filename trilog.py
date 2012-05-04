@@ -4,7 +4,7 @@ import logging
 import json as json
 import subprocess
 
-import config
+import baseconfig as config
 
 def tail(filename):
     p = subprocess.Popen(['tail', '-F', '-n', '0', filename],
