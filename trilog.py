@@ -1,11 +1,15 @@
-import tailer
 import msgpack
 import zmq
 import logging
-from sys import argv
 import json as json
+import subprocess
 
 import config
+
+def tail(filename):
+    p = subprocess.Popen(['tail', '-F', '-n', '0', filename],
+            stdout=subprocess.PIPE)
+    return p.stdout
 
 logging.basicConfig(level=config.LOGGING_LEVEL, format='%(asctime)s %(levelname)s %(message)s')
 
@@ -28,7 +32,7 @@ except Exception, a:
 	logging.error('Failed to open log, please specify valid path in config.py')
 	exit()
 
-for line in tailer.follow(errfile):
+for line in tail(errfile):
 	logging.debug('Found line')
 	try:
 		err = json.loads(line)
